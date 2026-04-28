@@ -1,18 +1,17 @@
-# استخدام نسخة أوبنتو رسمية
 FROM ubuntu:22.04
 
-# تحديث النظام وتثبيت الأدوات الأساسية للشبكات والـ VPN
+# تثبيت المتطلبات الأساسية
 RUN apt-get update && apt-get install -y \
     curl \
     wget \
     git \
-    net-tools \
-    iproute2 \
-    ca-certificates \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
-# ضبط بيئة العمل
+# أمر تثبيت X-UI بشكل صامت وتلقائي
+RUN curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh | bash -s -- -y
+
 WORKDIR /root
 
-# أمر لإبقاء السيرفر يعمل بشكل مستمر دون توقف
+# لإبقاء السيرفر حياً
 CMD ["tail", "-f", "/dev/null"]

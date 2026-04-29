@@ -2,19 +2,21 @@
 
 mkdir -p /etc/xray
 
-# توليد شهادة TLS
+# إنشاء شهادة TLS داخلية
 openssl req -x509 -nodes -newkey rsa:2048 \
 -keyout /etc/xray/key.pem \
 -out /etc/xray/cert.pem \
 -days 3650 \
 -subj "/CN=www.cloudflare.com"
 
-# إعداد البورت من Railway
 PORT=${PORT:-443}
+PASS=${PASSWORD:-123456}
 
-# إنشاء config النهائي
 cat > /etc/xray/config.json <<EOF
 {
+  "log": {
+    "loglevel": "warning"
+  },
   "inbounds": [
     {
       "port": ${PORT},
@@ -22,7 +24,7 @@ cat > /etc/xray/config.json <<EOF
       "settings": {
         "clients": [
           {
-            "password": "${PASSWORD:-123456}"
+            "password": "${PASS}"
           }
         ]
       },

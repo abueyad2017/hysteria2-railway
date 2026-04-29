@@ -1,14 +1,16 @@
 FROM debian:stable-slim
 
-RUN apt-get update && apt-get install -y curl ca-certificates bash openssl
+RUN apt-get update && apt-get install -y curl wget unzip ca-certificates openssl && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y curl ca-certificates bash && rm -rf /var/lib/apt/lists/*
+# تنزيل Xray core
+RUN wget https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip \
+ && unzip Xray-linux-64.zip \
+ && mv xray /usr/local/bin/ \
+ && chmod +x /usr/local/bin/xray
 
-RUN curl -fsSL https://get.hy2.sh/ | bash
-
+COPY config.json /config.json
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
-EXPOSE 443
+RUN chmod +x /entrypoint.sh
 
 CMD ["/entrypoint.sh"]

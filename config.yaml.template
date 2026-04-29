@@ -1,1 +1,9 @@
+listen: :2000
 
+tls:
+  cert: /etc/hysteria/cert.crt
+  key: /etc/hysteria/private.key
+
+auth:
+  type: password
+  password: "${PASSWORD}"
